@@ -4,21 +4,32 @@ namespace PackageUpdateUtility;
 
 public class Modificator
 {
-    public List<IModification> Modifications { get; private set; }
+    private List<IModification> _modifications;
 
     public Modificator()
     {
-        Modifications = new List<IModification>();
+        _modifications = new List<IModification>();
     }
 
     public void RunAllModifications()
     {
 
-        foreach (IModification modification in Modifications)
+        lock (_modifications)
         {
-            modification.RunModification();
+            foreach (IModification modification in _modifications)
+            {
+                modification.RunModification();
+            }
         }
 
     }
 
+    public void AddModification(IModification modification)
+    {
+        lock (_modifications)
+        {
+            _modifications.Add(modification);
+        }
+
+    }
 }

@@ -37,9 +37,9 @@ IModification.OpenFile zipOpenDelegate = (path) =>
 Modificator modificator = new Modificator();
 
 // add modifications
-modificator.Modifications.Add(new UpdateConfigModification(newLoggingUrl, "HaSaM/Epos.Server/Services/Windows/Epos/LocalConfiguration/AppSettings.config", openFileDelegate));
-modificator.Modifications.Add(new LocalConfigurationModification("[old]-A", "HaSaM/Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/package.xml", openFileDelegate));
-modificator.Modifications.Add(new LocalConfigurationModification(newLoggingUrl, "HaSaM/Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/Epos.zip$LocalConfiguration/AppSettings.config", zipOpenDelegate));
+modificator.AddModification(new UpdateConfigModification(newLoggingUrl, "HaSaM/Epos.Server/Services/Windows/Epos/LocalConfiguration/AppSettings.config", openFileDelegate));
+modificator.AddModification(new LocalConfigurationModification("[old]-A", "HaSaM/Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/package.xml", openFileDelegate));
+modificator.AddModification(new LocalConfigurationModification(newLoggingUrl, "HaSaM/Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/Epos.zip$LocalConfiguration/AppSettings.config", zipOpenDelegate));
 
 // run modifications
 modificator.RunAllModifications();
