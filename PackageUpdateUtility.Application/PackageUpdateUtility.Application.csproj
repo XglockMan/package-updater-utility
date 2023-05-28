@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>PackageUpdateUtility</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Update="PackageUpdateUtility.Core\Application.cs">
+        <Link>Core\Application.cs</Link>
+      </Compile>
+      <Compile Update="PackageUpdateUtility.Core\FileLoader.cs">
+        <Link>Core\FileLoader.cs</Link>
+      </Compile>
+      <Compile Update="PackageUpdateUtility.Core\Modifier.cs">
+        <Link>Core\Modifier.cs</Link>
+      </Compile>
+      <Compile Update="PackageUpdateUtility.Core\IFileEnvironment.cs">
+        <Link>Core\IFileEnvironment.cs</Link>
+      </Compile>
+      <Compile Update="PackageUpdateUtility.Core\FileEnvironments\ZipFileEnvironment.cs">
+        <Link>Core\FileEnvironments\ZipFileEnvironment.cs</Link>
+      </Compile>
+      <Compile Update="PackageUpdateUtility.Core\modifiers\XmlModifier.cs">
+        <Link>Core\modifiers\XmlModifier.cs</Link>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\PackageUpdateUtility.Core\PackageUpdateUtility.Core.csproj" />
+    </ItemGroup>
+
+</Project>
