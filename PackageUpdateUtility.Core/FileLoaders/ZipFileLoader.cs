@@ -25,14 +25,10 @@ public class ZipFileLoader : FileLoader
             
             zipToOpen.Close();
         }
-        
-        using (FileStream zipToOpen = new FileStream(filePath, FileMode.Open))
-        {
-            using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
-            {
-                fileEnvironment.WriteStream = archive.GetEntry(zipPath).Open();
-            }
-        }
+
+        FileStream zipReadToOpen = new FileStream(filePath, FileMode.Open);
+        ZipArchive readArchive = new ZipArchive(zipReadToOpen, ZipArchiveMode.Update);
+        fileEnvironment.WriteStream = readArchive.GetEntry(zipPath).Open();
 
         return fileEnvironment;
         
