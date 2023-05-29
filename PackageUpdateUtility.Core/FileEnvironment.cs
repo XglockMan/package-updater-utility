@@ -17,9 +17,9 @@ public class FileEnvironment
     
     public FileLoader FileLoader { get; private set; }
     
-    public Stream WriteStream { get; protected internal set; }
+    public Stream WriteStream { get; set; }
     
-    public string Data { get; protected internal set; }
+    public string Data { get; set; }
     
     public Modifier Modifier { get; protected set; }
 

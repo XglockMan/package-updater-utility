@@ -23,6 +23,11 @@ public class ZipFileLoader : FileLoader
 
             }
             
+            zipToOpen.Close();
+        }
+        
+        using (FileStream zipToOpen = new FileStream(filePath, FileMode.Open))
+        {
             using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
             {
                 fileEnvironment.WriteStream = archive.GetEntry(zipPath).Open();

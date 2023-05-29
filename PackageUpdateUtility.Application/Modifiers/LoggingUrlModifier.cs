@@ -28,7 +28,7 @@ public class LoggingUrlModifier : Modifier
             // check if the node has the attributes we need
             if (keyAttribute == null || valueAttribute == null)
             {
-                throw new Exception($"Cannot process verification on file {fileEnvironment.Path}");
+                continue;
             }
             
             if (keyAttribute.Value == "Log:Seq:Remote:Uri")

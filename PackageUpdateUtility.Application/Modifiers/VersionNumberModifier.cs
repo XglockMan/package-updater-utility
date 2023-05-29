@@ -51,6 +51,9 @@ public class VersionNumberModifier : Modifier
         }
         
         verisonNode.InnerText = NewValue.Replace("[old]", verisonNode.InnerText);
+        
+        _document.Save(fileEnvironment.WriteStream);
+        fileEnvironment.WriteStream.Close();
 
     }
 }

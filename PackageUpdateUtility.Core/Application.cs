@@ -121,14 +121,22 @@ public class Application
         foreach (FileEnvironment loadedFile in _loadedFiles)
         {
 
-            if (loadedFile.Modifier.Verify(loadedFile))
+            try
             {
-                FilesToBeModified.Add(loadedFile);
-                continue;
-            }
+                if (loadedFile.Modifier.Verify(loadedFile))
+                {
+                    FilesToBeModified.Add(loadedFile);
+                    continue;
+                }
             
-            FilesNotToBeModified.Add(loadedFile);
+                FilesNotToBeModified.Add(loadedFile);
 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception caught while verifying file {loadedFile.Path} with {e.Message}");
+                throw;
+            }
         }
         
     }
@@ -138,7 +146,15 @@ public class Application
 
         foreach (FileEnvironment fileToBeModified in FilesToBeModified)
         {
-            fileToBeModified.Modifier.Modify(fileToBeModified);
+            try
+            {
+                fileToBeModified.Modifier.Modify(fileToBeModified);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Exception caught while modifying file {fileToBeModified.Path} with {e.Message}");
+                throw;
+            }
         }
         
     }
