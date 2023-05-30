@@ -45,11 +45,9 @@ string? res = Console.ReadLine();
 
 switch (res?.ToLower())
 {
-    case "n":
-        return 0;
     case "y":
         break;
-    
+    case "n":
     default:
         return 0;
 }
