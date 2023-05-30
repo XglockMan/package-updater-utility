@@ -50,9 +50,9 @@ public class VersionNumberModifier : Modifier
         {
             throw new Exception($"Cannot process verification on file {fileEnvironment.Path}");
         }
-        
-        verisonNode.InnerText = NewValue.Replace("[old]", verisonNode.InnerText);
 
+        verisonNode.InnerText += NewValue;
+            
         IWritable fileWritable = fileEnvironment.FileWritable;
         Stream writeStream = fileWritable.OpenWrite();
         

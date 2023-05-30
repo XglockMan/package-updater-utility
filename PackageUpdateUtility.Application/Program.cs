@@ -7,7 +7,7 @@ using PackageUpdateUtility.Modifiers;
 Application application = Application.InitWithBasics();
 
 application.RegisterModifier<LoggingUrlModifier>("https://seq-log.eposid.eu/");
-application.RegisterModifier<VersionNumberModifier>("[old]-A");
+application.RegisterModifier<VersionNumberModifier>("-A");
 
 application.RegisterFile<BasicFileLoader, LoggingUrlModifier>("HaSaM/Epos.Server/Services/Windows/Epos/LocalConfiguration/AppSettings.config");
 application.RegisterFile<ZipFileLoader, LoggingUrlModifier>("HaSaM/Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/Epos.zip/LocalConfiguration/AppSettings.config");
@@ -17,27 +17,31 @@ application.LoadFiles();
 
 application.VerifyFiles();
 
-Console.WriteLine();
-
-Console.ForegroundColor = ConsoleColor.Green;
-
-foreach (FileEnvironment fileToByModified in application.FilesToBeModified)
+if (application.FilesToBeModified.Count > 0)
 {
-    Console.WriteLine($" + {fileToByModified.Path}");
+    Console.WriteLine("These files are goind to be modified:");
+    Console.ForegroundColor = ConsoleColor.Green;
+
+    foreach (FileEnvironment fileToByModified in application.FilesToBeModified)
+    {
+        Console.WriteLine($" + {fileToByModified.Path}");
+    }
+    
+    Console.ForegroundColor = ConsoleColor.White;
 }
 
-Console.WriteLine();
-
-Console.ForegroundColor = ConsoleColor.DarkYellow;
-
-foreach (FileEnvironment fileNotToBeModified in application.FilesNotToBeModified)
+if (application.FilesNotToBeModified.Count > 0)
 {
-    Console.WriteLine($" * {fileNotToBeModified.Path}");
+    Console.WriteLine("These files are up-to-date and will be not modified:");
+    Console.ForegroundColor = ConsoleColor.DarkYellow;
+
+    foreach (FileEnvironment fileNotToBeModified in application.FilesNotToBeModified)
+    {
+        Console.WriteLine($" * {fileNotToBeModified.Path}");
+    }
+
+    Console.ForegroundColor = ConsoleColor.White;
 }
-
-Console.ForegroundColor = ConsoleColor.White;
-
-Console.WriteLine();
 
 Console.Write("Do you want to proceed modifications [Y/n] ");
 

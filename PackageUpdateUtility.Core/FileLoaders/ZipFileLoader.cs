@@ -30,7 +30,7 @@ public class ZipFileLoader : FileLoader
 
             }
         }
-        
+
         fileEnvironment.FileWritable = new ZipWritable(zipPath, zipEntryPath);
 
         return fileEnvironment;
