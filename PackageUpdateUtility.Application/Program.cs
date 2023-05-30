@@ -49,6 +49,7 @@ string? res = Console.ReadLine();
 
 switch (res?.ToLower())
 {
+    case "":
     case "y":
         break;
     case "n":
