@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using PackageUpdateUtility.Core.Writables;
 
 namespace PackageUpdateUtility.Core.FileLoaders;
 
@@ -22,13 +23,9 @@ public class ZipFileLoader : FileLoader
                 fileEnvironment.Data = streamReader.ReadToEnd();
 
             }
-            
-            zipToOpen.Close();
         }
-
-        FileStream zipReadToOpen = new FileStream(filePath, FileMode.Open);
-        ZipArchive readArchive = new ZipArchive(zipReadToOpen, ZipArchiveMode.Update);
-        fileEnvironment.WriteStream = readArchive.GetEntry(zipPath).Open();
+        
+        fileEnvironment.FileWritable = new ZipWritable(filePath, zipPath);
 
         return fileEnvironment;
         

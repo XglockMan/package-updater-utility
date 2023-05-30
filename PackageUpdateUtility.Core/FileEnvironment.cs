@@ -17,7 +17,7 @@ public class FileEnvironment
     
     public FileLoader FileLoader { get; private set; }
     
-    public Stream WriteStream { get; set; }
+    public IWritable FileWritable { get; set; }
     
     public string Data { get; set; }
     

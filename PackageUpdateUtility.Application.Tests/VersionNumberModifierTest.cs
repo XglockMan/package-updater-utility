@@ -6,25 +6,6 @@ namespace PackageUpdateUtility.Tests;
 
 public class VersionNumberModifierTest
 {
-    
-    public class TestFileLoader : FileLoader
-    {
-
-        private string _data = "<root><Version>10.2023.0517.1-dev</Version><Content><Assembly file=\"Epos.zip\"/></Content></root>";
-
-        public MemoryStream MemoryStream = new();
-        
-        public override FileEnvironment Load(FileEnvironment fileEnvironment)
-        {
-
-            fileEnvironment.Data = _data;
-            fileEnvironment.WriteStream = MemoryStream;
-
-            return fileEnvironment;
-
-        }
-    }
-
     private Application _application;
     
     [SetUp]
@@ -36,7 +17,7 @@ public class VersionNumberModifierTest
         
         _application.RegisterModifier<VersionNumberModifier>("[old]-A");
 
-        _application.RegisterFile<TestFileLoader, VersionNumberModifier>("Test");
+        _application.RegisterFile<TestFileLoader, VersionNumberModifier>("<root><Version>10.2023.0517.1-dev</Version><Content><Assembly file=\"Epos.zip\"/></Content></root>");
     }
 
     [Test]
@@ -55,7 +36,7 @@ public class VersionNumberModifierTest
 
         TestFileLoader fileLoader = (TestFileLoader)_application.GetLoader<TestFileLoader>();
         
-        string dataString = System.Text.Encoding.UTF8.GetString(fileLoader.MemoryStream.ToArray());
+        string dataString = System.Text.Encoding.UTF8.GetString(((TestWritable)fileLoader.TestWritable).MemoryStream.ToArray());
         
         XmlDocument document = new XmlDocument();
         

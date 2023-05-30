@@ -46,7 +46,7 @@ public class LoggingUrlModifier : Modifier
     public override void Modify(FileEnvironment fileEnvironment)
     {
         XmlNodeList addNodeList = _document.GetElementsByTagName("add");
-        
+
         foreach (XmlNode node in addNodeList)
         {
 
@@ -64,8 +64,12 @@ public class LoggingUrlModifier : Modifier
                 valueAttribute.Value = NewValue;
             }
         }
+
+        IWritable fileWritable = fileEnvironment.FileWritable;
+        Stream writeStream = fileWritable.OpenWrite();
         
-        _document.Save(fileEnvironment.WriteStream);
-        fileEnvironment.WriteStream.Close();
+        _document.Save(writeStream);
+        
+        fileWritable.Close();
     }
 }
