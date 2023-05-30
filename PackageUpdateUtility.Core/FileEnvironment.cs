@@ -21,6 +21,8 @@ public class FileEnvironment
     
     public string Data { get; set; }
     
+    public object ParsedData { get; set; }
+    
     public Modifier Modifier { get; protected set; }
 
 

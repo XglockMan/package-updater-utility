@@ -37,13 +37,15 @@ public class LoggingUrlModifier : Modifier
                 }
             }
         }
+
+        fileEnvironment.ParsedData = xmlDocument;
         
         return true;
     }
 
     public override void Modify(FileEnvironment fileEnvironment)
     {
-        XmlDocument xmlDocument = new XmlDocument();
+        XmlDocument xmlDocument = (XmlDocument) fileEnvironment.ParsedData;
         
         XmlNodeList addNodeList = xmlDocument.GetElementsByTagName("add");
 

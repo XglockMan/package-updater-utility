@@ -31,16 +31,16 @@ public class VersionNumberModifier : Modifier
             return false;
         }
 
+        fileEnvironment.ParsedData = xmlDocument;
+        
         return true;
     }
 
     public override void Modify(FileEnvironment fileEnvironment)
     {
 
-        XmlDocument xmlDocument = new XmlDocument();
-        
-        xmlDocument.LoadXml(fileEnvironment.Data);
-        
+        XmlDocument xmlDocument = (XmlDocument) fileEnvironment.ParsedData;
+
         XmlNodeList elementsByTagName = xmlDocument.GetElementsByTagName("Version");
         
         XmlNode? verisonNode = elementsByTagName[0];
