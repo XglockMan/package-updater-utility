@@ -5,27 +5,33 @@ namespace PackageUpdateUtility.Core.FileLoaders;
 
 public class ZipFileLoader : FileLoader
 {
+
+    public static void ParseZipPath(string path,  out string zipPath, out string zipEntryPath)
+    {
+        
+        int zipIndex = path.LastIndexOf(".zip", StringComparison.Ordinal) + 4;
+
+        zipPath = path.Substring(0, zipIndex);
+        zipEntryPath = path.Substring(zipIndex + 1);
+    }
     
     public override FileEnvironment Load(FileEnvironment fileEnvironment)
     {
         
-        int zipIndex = fileEnvironment.Path.LastIndexOf(".zip", StringComparison.Ordinal) + 4;
-
-        string filePath = fileEnvironment.Path.Substring(0, zipIndex);
-        string zipPath = fileEnvironment.Path.Substring(zipIndex + 1);
+        ParseZipPath(fileEnvironment.Path, out string zipPath, out string zipEntryPath);
         
-        using (FileStream zipToOpen = new FileStream(filePath, FileMode.Open))
+        using (FileStream zipToOpen = new FileStream(zipPath, FileMode.Open))
         {
             using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Read))
             {
-                StreamReader streamReader = new StreamReader(archive.GetEntry(zipPath).Open());
+                StreamReader streamReader = new StreamReader(archive.GetEntry(zipEntryPath).Open());
 
                 fileEnvironment.Data = streamReader.ReadToEnd();
 
             }
         }
         
-        fileEnvironment.FileWritable = new ZipWritable(filePath, zipPath);
+        fileEnvironment.FileWritable = new ZipWritable(zipPath, zipEntryPath);
 
         return fileEnvironment;
         

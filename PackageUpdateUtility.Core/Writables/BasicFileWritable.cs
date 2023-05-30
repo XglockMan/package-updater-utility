@@ -14,7 +14,7 @@ public class BasicFileWritable : IWritable
 
     public Stream OpenWrite()
     {
-        _stream = File.OpenWrite(_filePath);
+        _stream = File.Open(_filePath, FileMode.Truncate);
         return _stream;
     }
 

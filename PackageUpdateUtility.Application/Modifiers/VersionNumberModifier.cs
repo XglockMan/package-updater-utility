@@ -6,18 +6,17 @@ namespace PackageUpdateUtility.Modifiers;
 public class VersionNumberModifier : Modifier
 {
 
-    private XmlDocument _document;
-    
     public VersionNumberModifier(string newValue) : base(newValue)
     {
-        _document = new XmlDocument();
     }
 
     public override bool Verify(FileEnvironment fileEnvironment)
     {
-        _document.LoadXml(fileEnvironment.Data);
+        XmlDocument xmlDocument = new XmlDocument();
         
-        XmlNodeList elementsByTagName = _document.GetElementsByTagName("Version");
+        xmlDocument.LoadXml(fileEnvironment.Data);
+
+        XmlNodeList elementsByTagName = xmlDocument.GetElementsByTagName("Version");
         
         XmlNode? verisonNode = elementsByTagName[0];
         
@@ -26,8 +25,8 @@ public class VersionNumberModifier : Modifier
         {
             throw new Exception($"Cannot process verification on file {fileEnvironment.Path}");
         }
-
-        if (verisonNode.InnerText == NewValue)
+        
+        if (verisonNode.InnerText.EndsWith(NewValue))
         {
             return false;
         }
@@ -37,10 +36,12 @@ public class VersionNumberModifier : Modifier
 
     public override void Modify(FileEnvironment fileEnvironment)
     {
+
+        XmlDocument xmlDocument = new XmlDocument();
         
-        _document.LoadXml(fileEnvironment.Data);
+        xmlDocument.LoadXml(fileEnvironment.Data);
         
-        XmlNodeList elementsByTagName = _document.GetElementsByTagName("Version");
+        XmlNodeList elementsByTagName = xmlDocument.GetElementsByTagName("Version");
         
         XmlNode? verisonNode = elementsByTagName[0];
         
@@ -55,7 +56,7 @@ public class VersionNumberModifier : Modifier
         IWritable fileWritable = fileEnvironment.FileWritable;
         Stream writeStream = fileWritable.OpenWrite();
         
-        _document.Save(writeStream);
+        xmlDocument.Save(writeStream);
         
         fileWritable.Close();
 

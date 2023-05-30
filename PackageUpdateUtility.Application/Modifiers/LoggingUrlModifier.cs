@@ -5,19 +5,17 @@ namespace PackageUpdateUtility.Modifiers;
 
 public class LoggingUrlModifier : Modifier
 {
-
-    private XmlDocument _document;
-    
     public LoggingUrlModifier(string newValue) : base(newValue)
     {
-        _document = new XmlDocument();
     }
 
     public override bool Verify(FileEnvironment fileEnvironment)
     {
-        _document.LoadXml(fileEnvironment.Data);
+        XmlDocument xmlDocument = new XmlDocument();
+        
+        xmlDocument.LoadXml(fileEnvironment.Data);
 
-        XmlNodeList addNodeList = _document.GetElementsByTagName("add");
+        XmlNodeList addNodeList = xmlDocument.GetElementsByTagName("add");
         
         foreach (XmlNode node in addNodeList)
         {
@@ -45,7 +43,9 @@ public class LoggingUrlModifier : Modifier
 
     public override void Modify(FileEnvironment fileEnvironment)
     {
-        XmlNodeList addNodeList = _document.GetElementsByTagName("add");
+        XmlDocument xmlDocument = new XmlDocument();
+        
+        XmlNodeList addNodeList = xmlDocument.GetElementsByTagName("add");
 
         foreach (XmlNode node in addNodeList)
         {
@@ -68,7 +68,7 @@ public class LoggingUrlModifier : Modifier
         IWritable fileWritable = fileEnvironment.FileWritable;
         Stream writeStream = fileWritable.OpenWrite();
         
-        _document.Save(writeStream);
+        xmlDocument.Save(writeStream);
         
         fileWritable.Close();
     }

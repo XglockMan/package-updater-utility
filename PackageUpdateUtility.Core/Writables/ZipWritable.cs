@@ -23,12 +23,14 @@ public class ZipWritable : IWritable
         _zipFile = new FileStream(_path, FileMode.Open);
         _archiveStream = new ZipArchive(_zipFile, ZipArchiveMode.Update);
         _stream = _archiveStream.GetEntry(_entryPath).Open();
+        _stream.SetLength(0);
         return _stream;
     }
 
     public void Close()
     {
         _stream.Close();
+        _archiveStream.Dispose();
         _zipFile.Close();
     }
 }
