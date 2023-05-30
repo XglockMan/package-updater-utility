@@ -53,6 +53,7 @@ switch (res?.ToLower())
         break;
     case "n":
     default:
+        Console.WriteLine("Exiting...");
         return 0;
 }
 
