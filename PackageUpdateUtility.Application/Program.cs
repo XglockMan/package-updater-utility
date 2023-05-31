@@ -9,9 +9,9 @@ Application application = Application.InitWithBasics();
 application.RegisterModifier<LoggingUrlModifier>("https://seq-log.eposid.eu/");
 application.RegisterModifier<VersionNumberModifier>("-A");
 
-application.RegisterFile<BasicFileLoader, LoggingUrlModifier>("HaSaM/Epos.Server/Services/Windows/Epos/LocalConfiguration/AppSettings.config");
-application.RegisterFile<ZipFileLoader, LoggingUrlModifier>("HaSaM/Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/Epos.zip/LocalConfiguration/AppSettings.config");
-application.RegisterFile<BasicFileLoader, VersionNumberModifier>("HaSaM/Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/package.xml");
+application.RegisterFile<BasicFileLoader, LoggingUrlModifier>("Epos.Server/Services/Windows/Epos/LocalConfiguration/AppSettings.config");
+application.RegisterFile<ZipFileLoader, LoggingUrlModifier>("Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/Epos.zip/LocalConfiguration/AppSettings.config");
+application.RegisterFile<BasicFileLoader, VersionNumberModifier>("Epos.Server/Services/IIS/UpdateWeb/Packages/Epos/package.xml");
 
 application.LoadFiles();
 
