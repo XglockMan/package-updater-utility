@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageUpdateUtility", "PackageUpdateUtility.csproj", "{A8CADB47-22C0-453C-A8A2-B223AB778B19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageUpdateUtility.Application", "PackageUpdateUtility.Application\PackageUpdateUtility.Application.csproj", "{A8CADB47-22C0-453C-A8A2-B223AB778B19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageUpdateUtility.Core", "PackageUpdateUtility.Core\PackageUpdateUtility.Core.csproj", "{F0C8ECF7-88FD-4A8A-A887-2DA1BCF7710B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackageUpdateUtility.Application.Tests", "PackageUpdateUtility.Application.Tests\PackageUpdateUtility.Application.Tests.csproj", "{1D1851F2-3FB2-47AA-B679-5960BFC58544}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +16,13 @@ Global
 		{A8CADB47-22C0-453C-A8A2-B223AB778B19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8CADB47-22C0-453C-A8A2-B223AB778B19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8CADB47-22C0-453C-A8A2-B223AB778B19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0C8ECF7-88FD-4A8A-A887-2DA1BCF7710B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0C8ECF7-88FD-4A8A-A887-2DA1BCF7710B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0C8ECF7-88FD-4A8A-A887-2DA1BCF7710B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0C8ECF7-88FD-4A8A-A887-2DA1BCF7710B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1851F2-3FB2-47AA-B679-5960BFC58544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1851F2-3FB2-47AA-B679-5960BFC58544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1851F2-3FB2-47AA-B679-5960BFC58544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1851F2-3FB2-47AA-B679-5960BFC58544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
