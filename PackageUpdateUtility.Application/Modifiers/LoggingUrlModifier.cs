@@ -12,8 +12,11 @@ public class LoggingUrlModifier : Modifier
     public override bool Verify(FileEnvironment fileEnvironment)
     {
         XmlDocument xmlDocument = new XmlDocument();
-        
-        xmlDocument.LoadXml(fileEnvironment.Data);
+
+        fileEnvironment.LoaderWriter.Load(fileEnvironment, (loaderStream) =>
+        {
+            xmlDocument.Load(loaderStream);
+        });
 
         XmlNodeList addNodeList = xmlDocument.GetElementsByTagName("add");
         
@@ -67,11 +70,9 @@ public class LoggingUrlModifier : Modifier
             }
         }
 
-        IWritable fileWritable = fileEnvironment.FileWritable;
-        Stream writeStream = fileWritable.OpenWrite();
-        
-        xmlDocument.Save(writeStream);
-        
-        fileWritable.Close();
+        fileEnvironment.LoaderWriter.Write(fileEnvironment, (writeStream) =>
+        {
+            xmlDocument.Save(writeStream);
+        });
     }
 }

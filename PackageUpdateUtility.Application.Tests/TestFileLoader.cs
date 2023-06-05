@@ -2,16 +2,17 @@ using PackageUpdateUtility.Core;
 
 namespace PackageUpdateUtility.Tests;
 
-public class TestFileLoader : FileLoader
+public class TestFileLoader : ILoaderWriter
 {
-    public IWritable TestWritable = new TestWritable();
-        
-    public override FileEnvironment Load(FileEnvironment fileEnvironment)
-    {
-        fileEnvironment.Data = fileEnvironment.Path;
+    public MemoryStream MemoryStream = new();
 
-        fileEnvironment.FileWritable = TestWritable;
-            
-        return fileEnvironment;
+    public void Load(FileEnvironment fileEnvironment, Action<Stream> action)
+    {
+        action(MemoryStream);
+    }
+
+    public void Write(FileEnvironment fileEnvironment, Action<Stream> action)
+    {
+        action(MemoryStream);
     }
 }

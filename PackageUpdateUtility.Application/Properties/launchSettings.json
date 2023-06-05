@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PackageUpdateUtility.Application": {
+      "commandName": "Project",
+      "workingDirectory": "D:\\Hasam\\PackageUpdateTest\\HaSaM"
+    }
+  }
+}

@@ -13,7 +13,7 @@ public class Application
 
     public List<FileEnvironment> FilesNotToBeModified { get; private set; }
 
-    private Dictionary<Type, FileLoader> _fileLoaders;
+    private Dictionary<Type, ILoaderWriter> _fileLoaderWriters;
     private Dictionary<Type, Modifier> _modifiers;
     
     public Application()
@@ -21,7 +21,7 @@ public class Application
         _filesToLoad = new List<FileEnvironment>();
         FilesToBeModified = new List<FileEnvironment>();
         FilesNotToBeModified = new List<FileEnvironment>();
-        _fileLoaders = new Dictionary<Type, FileLoader>();
+        _fileLoaderWriters = new Dictionary<Type, ILoaderWriter>();
         _modifiers = new Dictionary<Type, Modifier>();
         _loadedFiles = new List<FileEnvironment>();
     }
@@ -30,17 +30,17 @@ public class Application
     {
         Application application = new Application();
         
-        application.RegisterFileLoader<ZipFileLoader>();
-        application.RegisterFileLoader<BasicFileLoader>();
+        application.RegisterFileLoader<ZipFileLoaderWriter>();
+        application.RegisterFileLoader<BasicFileLoaderWriter>();
 
         return application;
     }
 
-    public FileLoader GetLoader<T>() where T: FileLoader
+    public ILoaderWriter GetLoaderWriter<T>() where T: ILoaderWriter
     {
-        lock (_fileLoaders)
+        lock (_fileLoaderWriters)
         {
-            return _fileLoaders[typeof(T)];
+            return _fileLoaderWriters[typeof(T)];
         }
     }
 
@@ -52,19 +52,19 @@ public class Application
         }
     }
 
-    public void RegisterFileLoader<T>() where T: FileLoader
+    public void RegisterFileLoader<T>() where T: ILoaderWriter
     {
 
-        lock (_fileLoaders)
+        lock (_fileLoaderWriters)
         {
-            if (_fileLoaders.ContainsKey(typeof(T)))
+            if (_fileLoaderWriters.ContainsKey(typeof(T)))
             {
                 throw new Exception("This type of file loader is already been injected");
             }
             
             T instance = Activator.CreateInstance<T>();
             
-            _fileLoaders.Add(typeof(T), instance);
+            _fileLoaderWriters.Add(typeof(T), instance);
         }
         
     }
@@ -90,13 +90,13 @@ public class Application
         
     }
 
-    public void RegisterFile<TL, TM>(string path) where TL : FileLoader where TM: Modifier
+    public void RegisterFile<TL, TM>(string path) where TL : ILoaderWriter where TM: Modifier
     {
 
-        FileLoader loader = GetLoader<TL>();
+        ILoaderWriter loaderWriter = GetLoaderWriter<TL>();
         Modifier modifier = GetModifier<TM>();
 
-        FileEnvironment fileEnvironment = new FileEnvironment(this, path, modifier, loader);
+        FileEnvironment fileEnvironment = new FileEnvironment(this, path, modifier, loaderWriter);
         
         _filesToLoad.Add(fileEnvironment);
     }
@@ -106,10 +106,7 @@ public class Application
 
         foreach (FileEnvironment file in _filesToLoad)
         {
-            FileEnvironment loadedFile = file.FileLoader.Load(file);
-            
-            _loadedFiles.Add(loadedFile);
-            
+            _loadedFiles.Add(file);
         }
         
     }
