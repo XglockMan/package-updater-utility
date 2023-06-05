@@ -1,55 +1,59 @@
 using System.Xml;
+
+using NUnit.Framework;
+
 using PackageUpdateUtility.Core;
 using PackageUpdateUtility.Modifiers;
 
-namespace PackageUpdateUtility.Tests;
-
-public class VersionNumberModifierTest
+namespace PackageUpdateUtility.Tests
 {
-    private Application _application;
-    
-    [SetUp]
-    public void SetUp()
+    public class VersionNumberModifierTest
     {
-        _application = new Application();
-        
-        _application.RegisterFileLoader<TestFileLoader>();
-        
-        _application.RegisterModifier<VersionNumberModifier>("[old]-A");
+        private PackageUpdateUtility.Core.Application _application;
 
-        _application.RegisterFile<TestFileLoader, VersionNumberModifier>("<root><Version>10.2023.0517.1-dev</Version><Content><Assembly file=\"Epos.zip\"/></Content></root>");
-    }
+        [SetUp]
+        public void SetUp()
+        {
+            _application = new PackageUpdateUtility.Core.Application();
 
-    [Test]
-    public void ModifyTest()
-    {
-        
-        _application.LoadFiles();
-        
-        _application.VerifyFiles();
+            _application.RegisterFileLoader<TestFileLoader>();
 
-        FileEnvironment fileEnvironment = _application.FilesToBeModified[0];
-        
-        Assert.NotNull(fileEnvironment);
-        
-        _application.ModifyFiles();
+            _application.RegisterModifier<VersionNumberModifier>("[old]-A");
 
-        TestFileLoader fileLoader = (TestFileLoader)_application.GetLoaderWriter<TestFileLoader>();
-        
-        string dataString = System.Text.Encoding.UTF8.GetString(fileLoader.MemoryStream.ToArray());
-        
-        XmlDocument document = new XmlDocument();
-        
-        document.LoadXml(dataString);
-        
-        Assert.NotNull(document);
+            _application.RegisterFile<TestFileLoader, VersionNumberModifier>("<root><Version>10.2023.0517.1-dev</Version><Content><Assembly file=\"Epos.zip\"/></Content></root>");
+        }
 
-        XmlNodeList nodeList = document.GetElementsByTagName("Version");
+        [Test]
+        public void ModifyTest()
+        {
 
-        XmlNode node = nodeList[0];
-        
-        Assert.NotNull(node);
-        
-        Assert.That(node.InnerText, Is.EqualTo("10.2023.0517.1-dev-A"));
+            _application.LoadFiles();
+
+            _application.VerifyFiles();
+
+            FileEnvironment fileEnvironment = _application.FilesToBeModified[0];
+
+            Assert.NotNull(fileEnvironment);
+
+            _application.ModifyFiles();
+
+            TestFileLoader fileLoader = (TestFileLoader)_application.GetLoaderWriter<TestFileLoader>();
+
+            string dataString = System.Text.Encoding.UTF8.GetString(fileLoader.MemoryStream.ToArray());
+
+            XmlDocument document = new XmlDocument();
+
+            document.LoadXml(dataString);
+
+            Assert.NotNull(document);
+
+            XmlNodeList nodeList = document.GetElementsByTagName("Version");
+
+            XmlNode node = nodeList[0];
+
+            Assert.NotNull(node);
+
+            Assert.That(node.InnerText, Is.EqualTo("10.2023.0517.1-dev-A"));
+        }
     }
 }

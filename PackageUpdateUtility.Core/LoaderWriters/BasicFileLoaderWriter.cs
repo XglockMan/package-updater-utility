@@ -1,21 +1,24 @@
-namespace PackageUpdateUtility.Core.FileLoaders;
+using System;
+using System.IO;
 
-public class BasicFileLoaderWriter : ILoaderWriter
+namespace PackageUpdateUtility.Core.FileLoaders
 {
-    public void Load(FileEnvironment fileEnvironment, Action<Stream> action)
+    public class BasicFileLoaderWriter : ILoaderWriter
     {
-        using (var _stream = File.Open(fileEnvironment.Path, FileMode.Open))
+        public void Load(FileEnvironment fileEnvironment, Action<Stream> action)
         {
-            action(_stream);
+            using (var _stream = File.Open(fileEnvironment.Path, FileMode.Open))
+            {
+                action(_stream);
+            }
+        }
+
+        public void Write(FileEnvironment fileEnvironment, Action<Stream> action)
+        {
+            using (var _stream = File.Open(fileEnvironment.Path, FileMode.Truncate))
+            {
+                action(_stream);
+            }
         }
     }
-
-    public void Write(FileEnvironment fileEnvironment, Action<Stream> action)
-    {
-        using (var _stream = File.Open(fileEnvironment.Path, FileMode.Truncate))
-        {
-            action(_stream);
-        }
-    }
-
 }

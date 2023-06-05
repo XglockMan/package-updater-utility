@@ -1,8 +1,12 @@
-namespace PackageUpdateUtility.Core;
+using System;
+using System.IO;
 
-public interface ILoaderWriter
+namespace PackageUpdateUtility.Core
 {
-    void Load(FileEnvironment fileEnvironment, Action<Stream> action);
-    void Write(FileEnvironment fileEnvironment, Action<Stream> action);
+    public interface ILoaderWriter
+    {
+        void Load(FileEnvironment fileEnvironment, Action<Stream> action);
+        void Write(FileEnvironment fileEnvironment, Action<Stream> action);
 
+    }
 }
