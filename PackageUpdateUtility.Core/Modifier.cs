@@ -1,16 +1,16 @@
-namespace PackageUpdateUtility.Core;
-
-public abstract class Modifier
+namespace PackageUpdateUtility.Core
 {
-    protected Modifier(string newValue)
+    public abstract class Modifier
     {
-        NewValue = newValue;
+        protected Modifier(string newValue)
+        {
+            NewValue = newValue;
+        }
+
+        public string NewValue { get; private set; }
+
+        public abstract bool Verify(FileEnvironment fileEnvironment);
+
+        public abstract void Modify(FileEnvironment fileEnvironment);
     }
-
-    public string NewValue { get; private set; }
-
-    public abstract bool Verify(FileEnvironment fileEnvironment);
-    
-    public abstract void Modify(FileEnvironment fileEnvironment);
-
 }

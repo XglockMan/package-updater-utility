@@ -1,37 +1,62 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <RootNamespace>PackageUpdateUtility</RootNamespace>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <Compile Update="PackageUpdateUtility.Core\Application.cs">
-        <Link>Core\Application.cs</Link>
-      </Compile>
-      <Compile Update="PackageUpdateUtility.Core\FileLoader.cs">
-        <Link>Core\FileLoader.cs</Link>
-      </Compile>
-      <Compile Update="PackageUpdateUtility.Core\Modifier.cs">
-        <Link>Core\Modifier.cs</Link>
-      </Compile>
-      <Compile Update="PackageUpdateUtility.Core\IFileEnvironment.cs">
-        <Link>Core\IFileEnvironment.cs</Link>
-      </Compile>
-      <Compile Update="PackageUpdateUtility.Core\FileEnvironments\ZipFileEnvironment.cs">
-        <Link>Core\FileEnvironments\ZipFileEnvironment.cs</Link>
-      </Compile>
-      <Compile Update="PackageUpdateUtility.Core\modifiers\XmlModifier.cs">
-        <Link>Core\modifiers\XmlModifier.cs</Link>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\PackageUpdateUtility.Core\PackageUpdateUtility.Core.csproj" />
-    </ItemGroup>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{43CDF0E3-9322-44C9-8BB6-53B1AAA8064B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PackageUpdateUtility.Application</RootNamespace>
+    <AssemblyName>PackageUpdateUtility.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Modifiers\LoggingUrlModifier.cs" />
+    <Compile Include="Modifiers\VersionNumberModifier.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PackageUpdateUtility.Core\PackageUpdateUtility.Core.csproj">
+      <Project>{70a8e8cd-160f-4301-a426-b910df368a12}</Project>
+      <Name>PackageUpdateUtility.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
