@@ -1,59 +1,67 @@
+using System;
 using System.Xml;
+
 using PackageUpdateUtility.Core;
 
-namespace PackageUpdateUtility.Modifiers;
-
-public class VersionNumberModifier : Modifier
+namespace PackageUpdateUtility.Modifiers
 {
-
-    private XmlDocument _document;
-    
-    public VersionNumberModifier(string newValue) : base(newValue)
+    public class VersionNumberModifier : Modifier
     {
-        _document = new XmlDocument();
-    }
 
-    public override bool Verify(FileEnvironment fileEnvironment)
-    {
-        _document.LoadXml(fileEnvironment.Data);
-        
-        XmlNodeList elementsByTagName = _document.GetElementsByTagName("Version");
-        
-        XmlNode? verisonNode = elementsByTagName[0];
-        
-        // check if the node has the attributes we need
-        if (verisonNode == null)
+        public VersionNumberModifier(string newValue) : base(newValue)
         {
-            throw new Exception($"Cannot process verification on file {fileEnvironment.Path}");
         }
 
-        if (verisonNode.InnerText == NewValue)
+        public override bool Verify(FileEnvironment fileEnvironment)
         {
-            return false;
+            XmlDocument xmlDocument = new XmlDocument();
+
+            fileEnvironment.LoaderWriter.Load(fileEnvironment, (loaderStream) =>
+            {
+                xmlDocument.Load(loaderStream);
+            });
+
+            XmlNodeList elementsByTagName = xmlDocument.GetElementsByTagName("Version");
+
+            XmlNode verisonNode = elementsByTagName[0];
+
+            // check if the node has the attributes we need
+            if (verisonNode == null)
+            {
+                throw new Exception($"Cannot process verification on file {fileEnvironment.Path}");
+            }
+
+            if (verisonNode.InnerText.EndsWith(NewValue))
+            {
+                return false;
+            }
+
+            fileEnvironment.ParsedData = xmlDocument;
+
+            return true;
         }
 
-        return true;
-    }
-
-    public override void Modify(FileEnvironment fileEnvironment)
-    {
-        
-        _document.LoadXml(fileEnvironment.Data);
-        
-        XmlNodeList elementsByTagName = _document.GetElementsByTagName("Version");
-        
-        XmlNode? verisonNode = elementsByTagName[0];
-        
-        // check if the node has the attributes we need
-        if (verisonNode == null)
+        public override void Modify(FileEnvironment fileEnvironment)
         {
-            throw new Exception($"Cannot process verification on file {fileEnvironment.Path}");
-        }
-        
-        verisonNode.InnerText = NewValue.Replace("[old]", verisonNode.InnerText);
-        
-        _document.Save(fileEnvironment.WriteStream);
-        fileEnvironment.WriteStream.Close();
 
+            XmlDocument xmlDocument = (XmlDocument)fileEnvironment.ParsedData;
+
+            XmlNodeList elementsByTagName = xmlDocument.GetElementsByTagName("Version");
+
+            XmlNode verisonNode = elementsByTagName[0];
+
+            // check if the node has the attributes we need
+            if (verisonNode == null)
+            {
+                throw new Exception($"Cannot process verification on file {fileEnvironment.Path}");
+            }
+
+            verisonNode.InnerText += NewValue;
+
+            fileEnvironment.LoaderWriter.Write(fileEnvironment, (writeStream) =>
+            {
+                xmlDocument.Save(writeStream);
+            });
+        }
     }
 }

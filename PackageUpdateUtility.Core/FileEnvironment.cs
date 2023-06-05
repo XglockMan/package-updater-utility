@@ -1,27 +1,24 @@
-namespace PackageUpdateUtility.Core;
-
-public class FileEnvironment
+namespace PackageUpdateUtility.Core
 {
-
-    private Application _application;
-
-    public FileEnvironment(Application application, string path, Modifier modifier, FileLoader loader)
+    public class FileEnvironment
     {
-        _application = application;
-        Modifier = modifier;
-        FileLoader = loader;
-        Path = path;
+
+        private Application _application;
+
+        public FileEnvironment(Application application, string path, Modifier modifier, ILoaderWriter loaderWriter)
+        {
+            _application = application;
+            Modifier = modifier;
+            LoaderWriter = loaderWriter;
+            Path = path;
+        }
+
+        public string Path { get; private set; }
+
+        public ILoaderWriter LoaderWriter { get; private set; }
+
+        public object ParsedData { get; set; }
+
+        public Modifier Modifier { get; protected set; }
     }
-    
-    public string Path { get; private set; }
-    
-    public FileLoader FileLoader { get; private set; }
-    
-    public Stream WriteStream { get; set; }
-    
-    public string Data { get; set; }
-    
-    public Modifier Modifier { get; protected set; }
-
-
 }
