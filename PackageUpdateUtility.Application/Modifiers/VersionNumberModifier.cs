@@ -13,8 +13,11 @@ public class VersionNumberModifier : Modifier
     public override bool Verify(FileEnvironment fileEnvironment)
     {
         XmlDocument xmlDocument = new XmlDocument();
-        
-        xmlDocument.LoadXml(fileEnvironment.Data);
+
+        fileEnvironment.LoaderWriter.Load(fileEnvironment, (loaderStream) =>
+        {
+            xmlDocument.Load(loaderStream);
+        });
 
         XmlNodeList elementsByTagName = xmlDocument.GetElementsByTagName("Version");
         
@@ -53,12 +56,9 @@ public class VersionNumberModifier : Modifier
 
         verisonNode.InnerText += NewValue;
             
-        IWritable fileWritable = fileEnvironment.FileWritable;
-        Stream writeStream = fileWritable.OpenWrite();
-        
-        xmlDocument.Save(writeStream);
-        
-        fileWritable.Close();
-
+        fileEnvironment.LoaderWriter.Write(fileEnvironment, (writeStream) =>
+        {
+            xmlDocument.Save(writeStream);
+        });
     }
 }

@@ -34,9 +34,9 @@ public class VersionNumberModifierTest
         
         _application.ModifyFiles();
 
-        TestFileLoader fileLoader = (TestFileLoader)_application.GetLoader<TestFileLoader>();
+        TestFileLoader fileLoader = (TestFileLoader)_application.GetLoaderWriter<TestFileLoader>();
         
-        string dataString = System.Text.Encoding.UTF8.GetString(((TestWritable)fileLoader.TestWritable).MemoryStream.ToArray());
+        string dataString = System.Text.Encoding.UTF8.GetString(fileLoader.MemoryStream.ToArray());
         
         XmlDocument document = new XmlDocument();
         
